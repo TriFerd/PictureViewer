@@ -18,13 +18,26 @@ public class ImagePanel extends JPanel{
     }
 
     public ImagePanel(BufferedImage image) {
-            this.image = image;
+        this.image = image;
     }
+
+    public ImagePanel() {
+
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
+        repaint();
+    }
+
+
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(image, 0, 0, this); // see javadoc for more info on the parameters            
+        if (image != null) {
+            g.drawImage(image, 0, 0, this);
+        }
     }
 
 }

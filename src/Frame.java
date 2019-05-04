@@ -11,12 +11,12 @@ public class Frame extends JFrame{
 
     private JPanel mainPanel;
     private JPanel controlsPanel;
-    private JPanel picturePanel;
     private JComboBox comboBoxMode;
     private JCheckBox cbRandom;
     private JButton btnSelectFolder;
     private JButton btnPrev;
     private JButton btnNext;
+    private ImagePanel imagePanel;
 
     private File currDirectory;
 
@@ -26,20 +26,19 @@ public class Frame extends JFrame{
 
     public Frame() {
         currDirectory = new File(".");
+        pl = new PictureLoader(null);
+        imagePanel = new ImagePanel();
+        mainPanel.add(imagePanel);
+        refreshPathList();
 
         // Listeners
-        btnSelectFolder.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                currDirectory = selectDirectory();
-                pl = new PictureLoader(getAllPicturesFromDirectory(currDirectory));
-                try {
-                    mainPanel.add(new ImagePanel(pl.getCurrentImage()));
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
+        btnSelectFolder.addActionListener(e -> {
+            File tempDir = selectDirectory();
+            if (tempDir != null)
+                currDirectory = tempDir;
+            refreshPathList();
         });
+
 
 
         setContentPane(mainPanel);
@@ -54,7 +53,7 @@ public class Frame extends JFrame{
     }
 
     private File selectDirectory() {
-        JFileChooser ch = new JFileChooser();
+        JFileChooser ch = new JFileChooser(currDirectory);
         ch.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         ch.showOpenDialog(Frame.this);
         return ch.getSelectedFile();
@@ -80,5 +79,15 @@ public class Frame extends JFrame{
             }
         }
         return imgPathList;
+    }
+
+    private void refreshPathList() {
+        pl.setImgPathList(getAllPicturesFromDirectory(currDirectory));
+        try {
+            imagePanel.setImage(pl.getCurrentImage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

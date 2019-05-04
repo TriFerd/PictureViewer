@@ -11,12 +11,7 @@ public class PictureLoader {
     private int imageCount = 0;
 
     public PictureLoader(ArrayList<String> imgPathList) {
-        if (imgPathList == null) {
-            imgPathList = new ArrayList<>();
-        } else {
-            this.imgPathList = imgPathList;
-        }
-        imageCount = imgPathList.size();
+        setImgPathList(imgPathList);
     }
 
     public void next() {
@@ -32,5 +27,14 @@ public class PictureLoader {
         if (imageCount == 0)
             return null;
         return ImageIO.read(new File(imgPathList.get(currentPos)));
+    }
+
+    public void setImgPathList(ArrayList<String> imgPathList) {
+        if (imgPathList == null) {
+            imgPathList = new ArrayList<>();
+        } else {
+            this.imgPathList = imgPathList;
+        }
+        imageCount = imgPathList.size();
     }
 }

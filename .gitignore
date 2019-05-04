@@ -52,6 +52,12 @@ nDownloads/
 n-downloader.properties
 n-download.properties
 .idea/artifacts/
+
+# project specific
+*.jpg
+*.png
+*.jpeg
+
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
