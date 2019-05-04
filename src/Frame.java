@@ -46,6 +46,28 @@ public class Frame extends JFrame{
         pack();
         setVisible(true);
 
+        btnNext.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                pl.next();
+                try {
+                    imagePanel.setImage(pl.getCurrentImage());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        btnPrev.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                pl.prev();
+                try {
+                    imagePanel.setImage(pl.getCurrentImage());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
     }
 
     public static void main(String[] args) {
