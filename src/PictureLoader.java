@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 public class PictureLoader {
     private ArrayList<String> imgPathList;
-    private int currentPos = 0;
-    private int imageCount = 0;
+    protected int currentPos = 0;
+    protected int imageCount = 0;
 
     public PictureLoader(ArrayList<String> imgPathList) {
         setImgPathList(imgPathList);

@@ -35,16 +35,14 @@ public class ImagePanel extends JPanel{
         repaint();
     }
 
-
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (image == null) {
             return;
         }
-        int imgWidth = image.getWidth();
-        int imgHeight = image.getHeight();
+        int imgWidth;
+        int imgHeight;
         int panelWidth = getWidth();
         int panelHeight = getHeight();
         double panelRatio = ((double) panelWidth) / panelHeight;
@@ -58,7 +56,6 @@ public class ImagePanel extends JPanel{
         }
 
         g.drawImage(resize(image, imgHeight, imgWidth), panelWidth / 2 - imgWidth / 2, panelHeight / 2 - imgHeight / 2, this);
-
     }
 
     private static BufferedImage resize(BufferedImage img, int height, int width) {

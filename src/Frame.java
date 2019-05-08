@@ -1,10 +1,9 @@
 import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
-import java.awt.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Frame extends JFrame{
@@ -18,15 +17,18 @@ public class Frame extends JFrame{
     private JButton btnNext;
     private ImagePanel imagePanel;
 
+
+    private boolean isRandomized = false;
+
     private File currDirectory;
 
     private ArrayList<String> imgPathList;
 
-    private PictureLoader pl;
+    private PictureLoaderRandom pictureLoader;
 
     public Frame() {
         currDirectory = new File(".");
-        pl = new PictureLoader(null);
+        pictureLoader = new PictureLoaderRandom(null);
         imagePanel = new ImagePanel();
         mainPanel.add(imagePanel);
         refreshPathList();
@@ -49,9 +51,13 @@ public class Frame extends JFrame{
         btnNext.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                pl.next();
+                if (isRandomized) {
+                    pictureLoader.nextRandom();
+                } else {
+                    pictureLoader.next();
+                }
                 try {
-                    imagePanel.setImage(pl.getCurrentImage());
+                    imagePanel.setImage(pictureLoader.getCurrentImage());
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -60,12 +66,23 @@ public class Frame extends JFrame{
         btnPrev.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                pl.prev();
+                if (isRandomized) {
+                    pictureLoader.prevRandom();
+                } else {
+                    pictureLoader.prev();
+                }
                 try {
-                    imagePanel.setImage(pl.getCurrentImage());
+                    imagePanel.setImage(pictureLoader.getCurrentImage());
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
+            }
+        });
+
+        cbRandom.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                isRandomized = cbRandom.isSelected();
             }
         });
     }
@@ -104,9 +121,9 @@ public class Frame extends JFrame{
     }
 
     private void refreshPathList() {
-        pl.setImgPathList(getAllPicturesFromDirectory(currDirectory));
+        pictureLoader.setImgPathList(getAllPicturesFromDirectory(currDirectory));
         try {
-            imagePanel.setImage(pl.getCurrentImage());
+            imagePanel.setImage(pictureLoader.getCurrentImage());
         } catch (Exception e) {
             e.printStackTrace();
         }
